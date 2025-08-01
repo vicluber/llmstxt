@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Effective\LlmsTxt\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  Effective\LlmsTxt\Service\LlmsTxtGenerator:
+    public: true
