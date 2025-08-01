@@ -9,6 +9,12 @@
             <trans-unit id="extension.description" resname="extension.description">
                 <source>Provides llms.txt file generation for LLM-friendly content</source>
             </trans-unit>
+            <trans-unit id="tab.llmo" resname="tab.llmo">
+                <source>LLMO</source>
+            </trans-unit>
+            <trans-unit id="field.tx_llmstxt_llmo" resname="field.tx_llmstxt_llmo">
+                <source>LLMO Property</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
