@@ -4,12 +4,25 @@
     "description": "TYPO3 extension for llms.txt support",
     "version": "1.0.0",
     "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "effective Team",
+            "email": "victor.willhuber@effective-world.com"
+        }
+    ],
+    "homepage": "https://github.com/effective/llms-txt",
     "require": {
         "php": "^8.1",
         "typo3/cms-core": "^12.4 || ^13.0",
         "typo3/cms-frontend": "^12.4 || ^13.0",
         "stolt/llms-txt-php": "^1.0"
     },
+    "keywords": [
+        "TYPO3",
+        "llms.txt",
+        "LLM",
+        "AI"
+    ],
     "autoload": {
         "psr-4": {
             "Effective\\LlmsTxt\\": "Classes/"
