@@ -50,14 +50,24 @@ class LlmsTxtGenerator
         $title = $site->getConfiguration()['websiteTitle'] ?? $homePage['title'] ?? 'Website';
         $llmsTxt->title($title);
 
-        $homePageContent = $this->getPageContent($rootPageId, $languageId);
-        $description = $this->extractDescription($homePageContent);
-        if ($description) {
+        $homePageContent = null;
+        $description = trim($homePage['tx_llmstxt_llms_description'] ?? '');
+        if ($description === '') {
+            $description = trim($homePage['description'] ?? '');
+        }
+        if ($description === '') {
+            $homePageContent = $this->getPageContent($rootPageId, $languageId);
+            $description = $this->extractDescription($homePageContent);
+        }
+        if ($description !== '') {
             $llmsTxt->description($description);
         }
 
+        if ($homePageContent === null) {
+            $homePageContent = $this->getPageContent($rootPageId, $languageId);
+        }
         $details = $this->extractDetails($homePageContent);
-        if ($details) {
+        if ($details !== '') {
             $llmsTxt->details($details);
         }
 
@@ -122,6 +132,7 @@ class LlmsTxtGenerator
 
         return '';
     }
+
 
     private function getPageTree(int $rootPageId, int $languageId, int $depth = 99): array
     {
@@ -219,18 +230,23 @@ class LlmsTxtGenerator
             return;
         }
 
-        $content = $this->getPageContent($page['uid'], $languageId);
-
         $section = new Section();
         $section->name($page['nav_title'] ?: $page['title'] ?: '[untitled]');
 
         $link = new Link();
         $url = $this->createPageUrl((int)$page['uid'], $site, $languageId);
         $link->url($url);
-        $link->urlTitle('[Content Snippet]');
+        $link->urlTitle($page['nav_title'] ?: $page['title'] ?: '[untitled]');
 
-        $description = $this->extractDescription($content);
-        if ($description) {
+        $description = trim($page['tx_llmstxt_llms_description'] ?? '');
+        if ($description === '') {
+            $description = trim($page['description'] ?? '');
+        }
+        if ($description === '') {
+            $content = $this->getPageContent((int)$page['uid'], $languageId);
+            $description = $this->extractDescription($content);
+        }
+        if ($description !== '') {
             $link->urlDetails($description);
         }
 
