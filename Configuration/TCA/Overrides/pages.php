@@ -31,6 +31,6 @@ call_user_func(function () {
         'pages',
         '--div--;LLL:EXT:llms_txt/Resources/Private/Language/locallang.xlf:tab.llmo,tx_llmstxt_llms_description,tx_llmstxt_section',
         '',
-        'after:seo'
+        'after:--div--;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.seo'
     );
 });
