@@ -18,6 +18,15 @@
             <trans-unit id="field.tx_llmstxt_llms_description.description" resname="field.tx_llmstxt_llms_description.description">
                 <source>Description used by LLMs for this page.</source>
             </trans-unit>
+            <trans-unit id="field.tx_llmstxt_section" resname="field.tx_llmstxt_section">
+                <source>LLMs section</source>
+            </trans-unit>
+            <trans-unit id="field.tx_llmstxt_section.description" resname="field.tx_llmstxt_section.description">
+                <source>Section this page belongs to.</source>
+            </trans-unit>
+            <trans-unit id="table.section" resname="table.section">
+                <source>LLMs sections</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
