@@ -227,9 +227,9 @@ class LlmsTxtGenerator
         $link = new Link();
         $url = $this->createPageUrl((int)$page['uid'], $site, $languageId);
         $link->url($url);
-        $link->urlTitle('[Content Snippet]');
+        $link->urlTitle($page['nav_title'] ?: $page['title'] ?: '[untitled]');
 
-        $description = $this->extractDescription($content);
+        $description = $page['description'] ?: $this->extractDescription($content);
         if ($description) {
             $link->urlDetails($description);
         }
