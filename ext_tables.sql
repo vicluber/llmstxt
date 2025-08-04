@@ -1,3 +1,4 @@
 CREATE TABLE pages (
-    tx_llmstxt_llmo text
+    tx_llmstxt_llms_description text
 );
+
