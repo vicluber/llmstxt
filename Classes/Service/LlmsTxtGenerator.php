@@ -50,15 +50,9 @@ class LlmsTxtGenerator
         $title = $site->getConfiguration()['websiteTitle'] ?? $homePage['title'] ?? 'Website';
         $llmsTxt->title($title);
 
-        $homePageContent = $this->getPageContent($rootPageId, $languageId);
-        $description = $this->extractDescription($homePageContent);
+        $description = $homePage['description'] ?? '';
         if ($description) {
             $llmsTxt->description($description);
-        }
-
-        $details = $this->extractDetails($homePageContent);
-        if ($details) {
-            $llmsTxt->details($details);
         }
 
         $pageTree = $this->getPageTree($rootPageId, $languageId);
@@ -72,56 +66,6 @@ class LlmsTxtGenerator
     }
 
 
-    private function getPageContent(int $pageId, int $languageId): string
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
-
-        $content = $queryBuilder
-            ->select('bodytext', 'header')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId)),
-                $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0)),
-                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0))
-            )
-            ->orderBy('sorting')
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        $text = '';
-        foreach ($content as $element) {
-            if (!empty($element['header'])) {
-                $text .= strip_tags($element['header']) . "\n\n";
-            }
-            if (!empty($element['bodytext'])) {
-                $text .= strip_tags($element['bodytext']) . "\n\n";
-            }
-        }
-
-        return trim($text);
-    }
-
-    private function extractDescription(string $content): string
-    {
-        $paragraphs = array_filter(explode("\n\n", $content));
-        if (!empty($paragraphs)) {
-            $firstParagraph = reset($paragraphs);
-            return mb_substr($firstParagraph, 0, 200);
-        }
-
-        return mb_substr($content, 0, 200);
-    }
-
-    private function extractDetails(string $content): string
-    {
-        $paragraphs = array_filter(explode("\n\n", $content));
-        if (count($paragraphs) > 1) {
-            return $paragraphs[1];
-        }
-
-        return '';
-    }
 
     private function getPageTree(int $rootPageId, int $languageId, int $depth = 99): array
     {
@@ -219,8 +163,6 @@ class LlmsTxtGenerator
             return;
         }
 
-        $content = $this->getPageContent($page['uid'], $languageId);
-
         $section = new Section();
         $section->name($page['nav_title'] ?: $page['title'] ?: '[untitled]');
 
@@ -229,7 +171,7 @@ class LlmsTxtGenerator
         $link->url($url);
         $link->urlTitle($page['nav_title'] ?: $page['title'] ?: '[untitled]');
 
-        $description = $page['description'] ?: $this->extractDescription($content);
+        $description = $page['description'] ?? '';
         if ($description) {
             $link->urlDetails($description);
         }
