@@ -1,4 +1,5 @@
 CREATE TABLE pages (
+    tx_llmstxt_index tinyint(1) DEFAULT 1 NOT NULL,
     tx_llmstxt_llms_description text,
     tx_llmstxt_section int DEFAULT 0 NOT NULL
 );
