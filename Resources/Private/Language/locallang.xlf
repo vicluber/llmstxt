@@ -12,6 +12,12 @@
             <trans-unit id="tab.llmo" resname="tab.llmo">
                 <source>LLMO</source>
             </trans-unit>
+            <trans-unit id="field.tx_llmstxt_index" resname="field.tx_llmstxt_index">
+                <source>LLM index this page</source>
+            </trans-unit>
+            <trans-unit id="field.tx_llmstxt_index.description" resname="field.tx_llmstxt_index.description">
+                <source>Include this page in the LLM index.</source>
+            </trans-unit>
             <trans-unit id="field.tx_llmstxt_llms_description" resname="field.tx_llmstxt_llms_description">
                 <source>LLMs description</source>
             </trans-unit>

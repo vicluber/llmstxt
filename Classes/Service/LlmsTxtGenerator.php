@@ -210,6 +210,12 @@ class LlmsTxtGenerator
                 return;
             }
         }
+        if ((int)($page['tx_llmstxt_index'] ?? 1) === 0) {
+            foreach ($node['children'] as $child) {
+                $this->addSectionsRecursively($sections, $child, $site, $languageId);
+            }
+            return;
+        }
         if (in_array((int)$page['doktype'], [254, 199, 4], true)) {
             foreach ($node['children'] as $child) {
                 $this->addSectionsRecursively($sections, $child, $site, $languageId);
@@ -246,6 +252,13 @@ class LlmsTxtGenerator
     {
         foreach ($pageTree as $node) {
             $page = $node['page'];
+
+            if ((int)($page['tx_llmstxt_index'] ?? 1) === 0) {
+                if (!empty($node['children'])) {
+                    $this->addPagesToSection($section, $node['children'], $site, $languageId, $prefix);
+                }
+                continue;
+            }
 
             if (in_array((int)$page['doktype'], [254, 199, 4], true)) {
                 if (!empty($node['children'])) {
