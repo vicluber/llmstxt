@@ -199,8 +199,6 @@ class LlmsTxtGenerator
     private function addSectionsRecursively(array &$sections, array $node, Site $site, int $languageId): void
     {
         $page = $node['page'];
-
-        // Traducción obligatoria si no está ya en el idioma deseado
         if ((int)($page['sys_language_uid'] ?? 0) !== $languageId) {
             $localized = $this->getLocalizedPage((int)$page['uid'], $languageId);
             if ($localized) {
@@ -212,8 +210,6 @@ class LlmsTxtGenerator
                 return;
             }
         }
-
-        // Skip system doktypes
         if (in_array((int)$page['doktype'], [254, 199, 4], true)) {
             foreach ($node['children'] as $child) {
                 $this->addSectionsRecursively($sections, $child, $site, $languageId);
