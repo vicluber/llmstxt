@@ -30,7 +30,6 @@ call_user_func(function () {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'pages',
         '--div--;LLL:EXT:llms_txt/Resources/Private/Language/locallang.xlf:tab.llmo,tx_llmstxt_llms_description,tx_llmstxt_section',
-        '',
-        'after:LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.seo'
+        ''
     );
 });
