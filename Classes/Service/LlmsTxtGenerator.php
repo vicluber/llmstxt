@@ -10,21 +10,17 @@ use Stolt\LlmsTxt\Section\Link;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 
 class LlmsTxtGenerator
 {
     private PageRepository $pageRepository;
     private ConnectionPool $connectionPool;
 
-    public function __construct()
+    public function __construct(PageRepository $pageRepository, ConnectionPool $connectionPool)
     {
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $this->pageRepository = $pageRepository;
+        $this->connectionPool = $connectionPool;
     }
 
     public function generate(Site $site): string
