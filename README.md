@@ -100,8 +100,9 @@ Once installed and activated, the extension will automatically provide a /llms.t
 
 1. Use the site's title and home page content for the header and description
 2. Generate sections based on the page tree structure
-3. Include page titles and descriptions (or content excerpts) for each page
-4. Only include visible, standard pages (doktype 1)
+3. Group pages that share a custom "section" into the same section of the llms.txt output
+4. Include page titles and descriptions (or content excerpts) for each page
+5. Only include visible, standard pages (doktype 1)
 
 ## Configuration Options (Future Enhancement)
 
@@ -110,7 +111,6 @@ Consider adding these features in future versions:
 - TypoScript configuration for customizing output
 - Backend module for preview and manual editing
 - Support for additional languages
-- Custom section grouping
 - Integration with SEO extensions for better descriptions
 - Support for .md versions of pages as per the llms.txt spec
 

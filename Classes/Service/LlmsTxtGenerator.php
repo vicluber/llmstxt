@@ -16,6 +16,7 @@ class LlmsTxtGenerator
 {
     private PageRepository $pageRepository;
     private ConnectionPool $connectionPool;
+    private array $sectionTitles = [];
 
     public function __construct(PageRepository $pageRepository, ConnectionPool $connectionPool)
     {
@@ -201,7 +202,7 @@ class LlmsTxtGenerator
         foreach ($pageTree as $node) {
             $this->addSectionsRecursively($sections, $node, $site, $languageId);
         }
-        return $sections;
+        return array_values($sections);
     }
 
     private function addSectionsRecursively(array &$sections, array $node, Site $site, int $languageId): void
@@ -231,8 +232,24 @@ class LlmsTxtGenerator
             return;
         }
 
-        $section = new Section();
-        $section->name($page['nav_title'] ?: $page['title'] ?: '[untitled]');
+        $sectionId = (int)($page['tx_llmstxt_section'] ?? 0);
+        if ($sectionId > 0) {
+            if (!isset($sections[$sectionId])) {
+                $sectionTitle = $this->getSectionTitle($sectionId);
+                $section = new Section();
+                $section->name($sectionTitle);
+                $sections[$sectionId] = $section;
+            }
+            $section = $sections[$sectionId];
+        } else {
+            $sectionKey = 'page-' . $page['uid'];
+            if (!isset($sections[$sectionKey])) {
+                $section = new Section();
+                $section->name($page['nav_title'] ?: $page['title'] ?: '[untitled]');
+                $sections[$sectionKey] = $section;
+            }
+            $section = $sections[$sectionKey];
+        }
 
         $link = new Link();
         $url = $this->createPageUrl((int)$page['uid'], $site, $languageId);
@@ -252,11 +269,30 @@ class LlmsTxtGenerator
         }
 
         $section->addLink($link);
-        $sections[] = $section;
 
         foreach ($node['children'] as $child) {
             $this->addSectionsRecursively($sections, $child, $site, $languageId);
         }
+    }
+
+    private function getSectionTitle(int $sectionId): string
+    {
+        if (!isset($this->sectionTitles[$sectionId])) {
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_llmstxt_section');
+            $row = $queryBuilder
+                ->select('title')
+                ->from('tx_llmstxt_section')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($sectionId)),
+                    $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0)),
+                    $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0))
+                )
+                ->executeQuery()
+                ->fetchAssociative();
+            $this->sectionTitles[$sectionId] = $row['title'] ?? ('Section ' . $sectionId);
+        }
+
+        return $this->sectionTitles[$sectionId];
     }
 
 
