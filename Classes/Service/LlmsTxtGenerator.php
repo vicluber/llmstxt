@@ -154,6 +154,7 @@ class LlmsTxtGenerator
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($parentId)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0)),
                 $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0)),
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0))
             )
